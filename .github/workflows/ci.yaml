@@ -37,7 +37,7 @@ jobs:
       # Update GitOps repo
       - name: Update Kubernetes Manifest
         run: |
-          git clone https://github.com/<your-username>/gitops-manifests.git
+          git clone https://github.com/Siddhuge/gitops-manifests.git
           cd gitops-manifests/k8s
 
           sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deployment.yaml
