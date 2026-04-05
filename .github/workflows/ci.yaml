@@ -47,4 +47,4 @@ jobs:
 
           git add .
           git commit -m "Update image to ${{ github.sha }}"
-          git push https://${{ secrets.GIT_TOKEN }}@github.com/<your-username>/gitops-manifests.git
+          git push https://${{ secrets.GIT_TOKEN }}@github.com/Siddhuge/gitops-manifests.git
