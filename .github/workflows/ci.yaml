@@ -35,16 +35,32 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       # Update GitOps repo
+      # - name: Update Kubernetes Manifest
+      #   run: |
+      #     git clone https://github.com/Siddhuge/gitops-manifests.git
+      #     cd gitops-manifests/k8s
+
+      #     sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deployment.yaml
+
+      #     git config user.name "github-actions"
+      #     git config user.email "actions@github.com"
+
+      #     git add .
+      #     git commit -m "Update image to ${{ github.sha }}"
+      #     git push https://${{ secrets.GIT_TOKEN }}@github.com/Siddhuge/gitops-manifests.git
+
       - name: Update Kubernetes Manifest
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
-          git clone https://github.com/Siddhuge/gitops-manifests.git
+          git clone https://${GIT_TOKEN}@github.com/Siddhuge/gitops-manifests.git
           cd gitops-manifests/k8s
-
+          
           sed -i "s|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}|g" deployment.yaml
-
+          
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-
+          
           git add .
           git commit -m "Update image to ${{ github.sha }}"
-          git push https://${{ secrets.GIT_TOKEN }}@github.com/Siddhuge/gitops-manifests.git
+          git push
