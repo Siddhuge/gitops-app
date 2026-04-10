@@ -1,7 +1,12 @@
-FROM node:18-alpine
+FROM python:3.12-slim
+
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
 COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]
+
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
+
+RUN mkdir -p reports logs
+RUN touch cache.json
+
+CMD ["python", "main.py"]
